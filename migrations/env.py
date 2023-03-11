@@ -6,12 +6,12 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 from config import settings
 from alembic import context
-from user import Base
+from tables.base import Base
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
-config.set_main_option("sqlalchemy.url", 'postgresql+asyncpg://postgres:postgres@db:5432/postgres')
-# Interpret the config file for Python logging.
+config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
+# Interpret the config file for Python log.
 # This line sets up loggers basically.
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
@@ -20,7 +20,8 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-from user import User
+from tables.currencies import Currencies
+
 target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,

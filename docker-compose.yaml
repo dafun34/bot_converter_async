@@ -5,13 +5,14 @@ services:
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASS}
-      POSTGRES_DB: ${DB_NAME_TEST}
+      POSTGRES_DB: ${DB_NAME}
     ports:
       - 5432:5432
   app:
     build: .
     volumes:
       - ./migrations:/app/migrations
+      - ./tables:/app/tables
     ports:
       - 9595:9595
     env_file:
