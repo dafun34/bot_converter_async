@@ -1,0 +1,20 @@
+version: '3'
+services:
+  db:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_NAME_TEST}
+    ports:
+      - 5432:5432
+  app:
+    build: .
+    volumes:
+      - ./migrations:/app/migrations
+    ports:
+      - 9595:9595
+    env_file:
+      - .env
+    depends_on:
+      - db
