@@ -1,5 +1,6 @@
-from typing import Optional, Any
+from typing import Any, Optional
 from urllib.parse import urlparse
+
 from pydantic import BaseSettings, PostgresDsn, validator
 
 

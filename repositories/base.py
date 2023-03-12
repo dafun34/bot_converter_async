@@ -1,4 +1,3 @@
-
 from typing import Any, NewType, Union
 
 from sqlalchemy.engine import Result
@@ -56,7 +55,7 @@ class Repository:
 
     @classmethod
     async def _db_request(
-            cls, session: AsyncSession, *, query: Query
+        cls, session: AsyncSession, *, query: Query
     ) -> Result:
         """Выполнить запрос в базу."""
         raw_query = query

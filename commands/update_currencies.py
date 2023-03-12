@@ -2,6 +2,7 @@
 import asyncio
 import json
 from datetime import datetime
+
 from aiohttp import ClientSession, web
 
 from repositories.currencies import update_or_create_currencies
@@ -12,7 +13,7 @@ async def get_currencies_for_db() -> None:
     async with ClientSession() as session:
         url = "https://www.cbr-xml-daily.ru/daily_json.js"
         async with session.get(url) as response:
-            currencies_json = json.loads(await response.text())['Valute']
+            currencies_json = json.loads(await response.text())["Valute"]
             await update_or_create_currencies(currencies_json)
 
     # response = requests.get("https://www.cbr-xml-daily.ru/daily_json.js")
@@ -40,8 +41,10 @@ async def get_currencies_for_db() -> None:
 
 
 async def main():
-    task = asyncio.create_task(get_currencies_for_db())
-    await task
+    await get_currencies_for_db()
+    # task = asyncio.create_task(get_currencies_for_db())
+    # await task
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     asyncio.run(main())
