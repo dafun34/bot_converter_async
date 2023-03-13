@@ -10,8 +10,11 @@ from telegram.ext import (
     filters,
 )
 
-from handlers.callback import help_callback_handler, menu_callback_handler, \
-    get_currencies_handler
+from handlers.callback import (
+    detail_currency_handler, get_currencies_handler,
+    help_callback_handler,
+    menu_callback_handler,
+)
 from handlers.command import start
 from handlers.convert_scenario import (
     CONVERTED_CURRENCY,
@@ -71,8 +74,13 @@ if __name__ == "__main__":
             menu_callback_handler, pattern="^menu_callback_handler"
         )
     )
-    application.add_handler(CallbackQueryHandler(get_currencies_handler,
-                                                 pattern="^get_currencies_handler"))
+    application.add_handler(
+        CallbackQueryHandler(
+            get_currencies_handler, pattern="^get_currencies_handler"
+        )
+    )
+    application.add_handler(CallbackQueryHandler(
+        detail_currency_handler, pattern="^[A-Z]{3}"))
     application.run_polling()
 
     logger.info("Bot run up.")

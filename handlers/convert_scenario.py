@@ -11,13 +11,20 @@ from markups.markups import (
     converter_scenario_markup,
     menu,
 )
-from repositories.currencies import get_currency_by_char_code
+from repositories.currencies import get_all_active_currencies_values, \
+    get_currency_by_char_code
 
 VALUE_FOR_CONVERT = 1
 CONVERTED_CURRENCY = 2
 TO_CONVERT_CURRENCY = 3
 REPLACE_VALUE = 4
 CANCEL_VALUE = 5
+
+def cache_currencies(currencies):
+    cache = {}
+    for item in currencies:
+        cache[item.char_code] = item
+    return cache
 
 
 async def converter_scenario_entry_point(
@@ -60,13 +67,15 @@ async def get_first_currency_for_convert(
 
     value_for_convert = decimal.Decimal(update.message.text)
     context.user_data["value_for_convert"] = value_for_convert
-    # currencies = await get_all_active_currencies_values()
+    currencies = await get_all_active_currencies_values()
+    currencies = cache_currencies(currencies)
+    context.user_data["active_currencies"] = currencies
     text = (
         "Выберети валюту из которой будет конвертироваться "
         f"это значение: {value_for_convert}"
     )
     await update.effective_chat.send_message(
-        # text, reply_markup=active_currencies_markup(currencies, True)
+        text, reply_markup=active_currencies_markup(currencies.values(), True)
     )
     return CONVERTED_CURRENCY
 
@@ -80,16 +89,16 @@ async def set_first_currency(
     Обработать запрос выбора первой валюты.
     """
     await update.callback_query.answer()
-    currency = await get_currency_by_char_code(update.callback_query.data)
+    currencies = context.user_data['active_currencies']
+    currency = currencies[update.callback_query.data]
     context.user_data["first_currency"] = currency
-    # currencies = await get_all_active_currencies_values()
     value_for_convert = context.user_data["value_for_convert"]
     text = (
         "Выбирите валюту в которую надо конвертировать "
         f"значение {value_for_convert}"
     )
     await update.effective_chat.send_message(
-        # text, reply_markup=active_currencies_markup(currencies, True)
+        text, reply_markup=active_currencies_markup(currencies.values(), True)
     )
     return TO_CONVERT_CURRENCY
 
@@ -99,10 +108,9 @@ async def output_convert_result(
 ) -> Union[ConversationHandler, int]:
     """Получить вторую валюту и вывести результат конвертации."""
     await update.callback_query.answer()
+    currencies = context.user_data['active_currencies']
     first_currency = context.user_data["first_currency"]
-    second_currency = await get_currency_by_char_code(
-        update.callback_query.data
-    )
+    second_currency = currencies[update.callback_query.data]
     value = context.user_data["value_for_convert"]
     output_value = round(
         (first_currency.value / second_currency.value) * value, 2

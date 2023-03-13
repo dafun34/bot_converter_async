@@ -47,8 +47,7 @@ async def menu_callback_handler(
 
 
 async def get_currencies_handler(
-    update: Update,
-    context: telegram.ext.ContextTypes.DEFAULT_TYPE
+    update: Update, context: telegram.ext.ContextTypes.DEFAULT_TYPE
 ) -> None:
     """
     Обработчик запроса get_currencies.
@@ -76,16 +75,16 @@ async def base_handler(
 
 async def detail_currency_handler(
     update: Update,
-    query: CallbackQuery,
+    context: telegram.ext.ContextTypes.DEFAULT_TYPE
 ) -> None:
     """Обработчик получения курса по запросу с кнопки."""
+    query = update.callback_query
     await query.answer()
     morph_parser = MorphParser()
     char_code = update.callback_query.data
     currency = await get_currency_by_char_code(char_code)
     currency_name = morph_parser.change_case(currency.name)
-    updated_at = currency.value_updated_at.strftime("%d-%m-%Y")
-    text = f"Курс {currency_name} - {currency.value} от {updated_at}"
+    text = f"Курс {currency_name} - {currency.value}"
     currencies = await get_all_active_currencies_values()
     await update.effective_chat.send_message(
         text, reply_markup=active_currencies_markup(currencies)
