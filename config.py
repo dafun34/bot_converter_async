@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     DB_PORT: str
     DB_DRIVER: str
     DATABASE_URL: PostgresDsn = None
+    ACTIVE_CURRENCIES: list = ["USD", "EUR", "GBP", "JPY", "RUB"]
 
     class Config:
         """Конфиг класса."""
