@@ -72,14 +72,14 @@ def active_currencies_markup(
     по char_code(Код валюты)
     """
     keyboard = []
-    for currencie in currencies:
-        if not converter and currencie.get("name") == "Российский Рубль":
+    for currency in currencies:
+        if not converter and currency.name == "Российский Рубль":
             continue
         keyboard.append(
             [
                 InlineKeyboardButton(
-                    currencie.get("name"),
-                    callback_data=currencie.get("char_code"),
+                    currency.name,
+                    callback_data=currency.char_code,
                 )
             ]
         )

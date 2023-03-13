@@ -3,7 +3,6 @@ import inspect
 import sys
 
 import telegram.ext
-from morph_analyzer import MorphParser
 from telegram import CallbackQuery, Update
 
 from markups.markups import active_currencies_markup
@@ -14,19 +13,25 @@ from repositories.currencies import (
     get_currency_by_char_code,
 )
 from tables.currencies import Currencies
+from utils.morph_analyzer import MorphParser
 
 
-async def help_callback_handler(update: Update, query: CallbackQuery) -> None:
+async def help_callback_handler(
+    update: Update, context: telegram.ext.ContextTypes.DEFAULT_TYPE
+) -> None:
     """Обработчик запроса get_help.
 
     Выводит помощь и инлайн клавиатуру
     """
+    query = update.callback_query
     await query.answer()
     text = "Тут будет help"
     await update.effective_chat.send_message(text, reply_markup=start())
 
 
-async def menu_callback_handler(update: Update, query: CallbackQuery) -> None:
+async def menu_callback_handler(
+    update: Update, context: telegram.ext.ContextTypes.DEFAULT_TYPE
+) -> None:
     """Обработчик запроса get_menu.
 
     Возвращает инлайн клавиатуру.
@@ -34,6 +39,7 @@ async def menu_callback_handler(update: Update, query: CallbackQuery) -> None:
     "Курсы валют"
     ...
     """
+    query = update.callback_query
     await query.answer()
     await update.effective_chat.send_message(
         "Меню:", reply_markup=menu_markup()
@@ -42,7 +48,7 @@ async def menu_callback_handler(update: Update, query: CallbackQuery) -> None:
 
 async def get_currencies_handler(
     update: Update,
-    query: CallbackQuery,
+    context: telegram.ext.ContextTypes.DEFAULT_TYPE
 ) -> None:
     """
     Обработчик запроса get_currencies.
@@ -50,6 +56,7 @@ async def get_currencies_handler(
     Возвращает инлайн клавиатуру активных курсов валют.
 
     """
+    query = update.callback_query
     await query.answer()
     currencies = await get_all_active_currencies_values()
     reply_markup = active_currencies_markup(currencies)
@@ -93,21 +100,21 @@ def set_handler_by_currency_char_code(handlers: dict) -> dict:
     return handlers
 
 
-def init_handlers() -> dict:
-    """Получить обработчики динамически."""
-    name = 0
-    func = 1
-    handlers = {}
-    current_module = sys.modules[__name__]
-    for item in inspect.getmembers(current_module, inspect.isfunction):
-        if (
-            item[name].endswith("handler")
-            and callable(item[func])  # noqa W503
-            and item[name] != "base_handler"  # noqa W503
-        ):
-            handlers[item[name]] = item[func]
-    handlers = set_handler_by_currency_char_code(handlers)
-    return handlers
+# def init_handlers() -> dict:
+#     """Получить обработчики динамически."""
+#     name = 0
+#     func = 1
+#     handlers = {}
+#     current_module = sys.modules[__name__]
+#     for item in inspect.getmembers(current_module, inspect.isfunction):
+#         if (
+#             item[name].endswith("handler")
+#             and callable(item[func])  # noqa W503
+#             and item[name] != "base_handler"  # noqa W503
+#         ):
+#             handlers[item[name]] = item[func]
+#     handlers = set_handler_by_currency_char_code(handlers)
+#     return handlers
 
 
-CALLBACK_HANDLERS = init_handlers()
+# CALLBACK_HANDLERS = init_handlers()

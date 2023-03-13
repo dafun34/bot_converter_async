@@ -7,10 +7,22 @@ from telegram.ext import (
     CommandHandler,
     ConversationHandler,
     MessageHandler,
+    filters,
 )
 
-from db import async_session
+from handlers.callback import help_callback_handler, menu_callback_handler, \
+    get_currencies_handler
 from handlers.command import start
+from handlers.convert_scenario import (
+    CONVERTED_CURRENCY,
+    TO_CONVERT_CURRENCY,
+    VALUE_FOR_CONVERT,
+    cancel,
+    converter_scenario_entry_point,
+    get_first_currency_for_convert,
+    output_convert_result,
+    set_first_currency,
+)
 from log.logger import logger
 
 load_dotenv()
@@ -20,7 +32,6 @@ if __name__ == "__main__":
     application = ApplicationBuilder().token(os.getenv("BOT_TOKEN")).build()
     start_handler = CommandHandler("start", start)
     application.add_handler(start_handler)
-
     conv_handler = ConversationHandler(
         entry_points=[
             CallbackQueryHandler(
@@ -50,7 +61,18 @@ if __name__ == "__main__":
     )
 
     application.add_handler(conv_handler)
-    application.add_handler(CallbackQueryHandler(base_handler))
+    application.add_handler(
+        CallbackQueryHandler(
+            help_callback_handler, pattern="^help_callback_handler"
+        )
+    )
+    application.add_handler(
+        CallbackQueryHandler(
+            menu_callback_handler, pattern="^menu_callback_handler"
+        )
+    )
+    application.add_handler(CallbackQueryHandler(get_currencies_handler,
+                                                 pattern="^get_currencies_handler"))
     application.run_polling()
 
     logger.info("Bot run up.")

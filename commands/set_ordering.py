@@ -1,7 +1,10 @@
 """Модуль команды устанавливающей сортировку."""
 import asyncio
 
-from repositories.currencies import get_currency_by_char_code, set_ordering_by_char_code
+from repositories.currencies import (
+    get_currency_by_char_code,
+    set_ordering_by_char_code,
+)
 
 
 async def set_currencies_ordering():

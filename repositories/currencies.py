@@ -1,7 +1,8 @@
 import datetime
 
-from sqlalchemy import insert, select, update
+from sqlalchemy import insert, not_, select, update
 
+from config import settings
 from repositories.base import Repository
 from tables.currencies import Currencies
 
@@ -53,6 +54,29 @@ async def set_ordering_by_char_code(char_code, value):
         .values(ordering_id=value)
     )
     await Repository.update(query)
-    
+
+
 async def deactivate_currencies_to_default():
-    update(Currencies).where(Currencies.char_code)
+    query = (
+        update(Currencies)
+        .where(not_(Currencies.char_code.in_(settings.ACTIVE_CURRENCIES)))
+        .values(is_active=False)
+    )
+    await Repository.update(query)
+
+
+async def get_all_active_currencies_values():
+    query = select(Currencies).where(Currencies.is_active == True)
+    return await Repository.all(query)
+
+
+async def insert_ruble():
+    query = insert(Currencies).values(
+        source_id="RUB1",
+        name="Российский Рубль",
+        char_code="RUB",
+        value=1,
+        is_active=True,
+        ordering_id=1,
+    )
+    await Repository.insert(query)
