@@ -17,6 +17,7 @@ from repositories.currencies import get_all_active_currencies_values
 
 class ConvertState(Enum):
     """Энум со значениями сценария конвертации."""
+
     VALUE_FOR_CONVERT = 1
     CONVERTED_CURRENCY = 2
     TO_CONVERT_CURRENCY = 3
