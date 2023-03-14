@@ -1,9 +1,6 @@
 """Модуль обработчиков Callback запросов."""
-import inspect
-import sys
-
 import telegram.ext
-from telegram import CallbackQuery, Update
+from telegram import Update
 
 from markups.markups import active_currencies_markup
 from markups.markups import menu as menu_markup
@@ -64,13 +61,13 @@ async def get_currencies_handler(
     )
 
 
-async def base_handler(
-    update: Update, context: telegram.ext.ContextTypes.DEFAULT_TYPE
-) -> None:
-    """Базовый хендлер."""
-    query = update.callback_query
-    handler = CALLBACK_HANDLERS.get(query.data)
-    await handler(update, query)
+# async def base_handler(
+#     update: Update, context: telegram.ext.ContextTypes.DEFAULT_TYPE
+# ) -> None:
+#     """Базовый хендлер."""
+#     query = update.callback_query
+#     handler = CALLBACK_HANDLERS.get(query.data)
+#     await handler(update, query)
 
 
 async def detail_currency_handler(

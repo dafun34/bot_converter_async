@@ -1,6 +1,5 @@
 """Модуль репозитория валют."""
 import datetime
-import decimal
 
 from sqlalchemy import insert, not_, select, update
 
@@ -54,9 +53,7 @@ async def update_or_create_currencies(currencies_json: dict) -> None:
         await update_currencies_values(data)
 
 
-async def set_ordering_by_char_code(
-    char_code: str, value: decimal.Decimal
-) -> None:
+async def set_ordering_by_char_code(char_code: str, value: int) -> None:
     """Установить сортировку."""
     query = (
         update(Currency)

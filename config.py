@@ -1,3 +1,4 @@
+"""Модуль конфигурации проекта."""
 from typing import Any, Optional
 from urllib.parse import urlparse
 
@@ -5,6 +6,8 @@ from pydantic import BaseSettings, PostgresDsn, validator
 
 
 class Settings(BaseSettings):
+    """Базовая модель настроек проекта."""
+
     DB_NAME: str
     DB_USER: str
     DB_PASS: str

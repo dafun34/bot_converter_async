@@ -11,11 +11,7 @@ from markups.markups import (
     converter_scenario_markup,
     menu,
 )
-from repositories.currencies import (
-    get_all_active_currencies_values,
-    get_currency_by_char_code,
-)
-
+from repositories.currencies import get_all_active_currencies_values
 
 # TODO: Переписать константы на Enum
 VALUE_FOR_CONVERT = 1

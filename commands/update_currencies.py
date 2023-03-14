@@ -1,9 +1,8 @@
 """Модуль команды получающей и обновляющей валюты."""
 import asyncio
 import json
-from datetime import datetime
 
-from aiohttp import ClientSession, web
+from aiohttp import ClientSession
 
 from repositories.currencies import update_or_create_currencies
 
@@ -17,7 +16,8 @@ async def get_currencies_for_db() -> None:
             await update_or_create_currencies(currencies_json)
 
 
-async def main():
+async def main() -> None:
+    """Запустить команду."""
     await get_currencies_for_db()
 
 
