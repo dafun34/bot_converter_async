@@ -19,9 +19,7 @@ from handlers.callback import (
 )
 from handlers.command import start
 from handlers.convert_scenario import (
-    CONVERTED_CURRENCY,
-    TO_CONVERT_CURRENCY,
-    VALUE_FOR_CONVERT,
+    ConvertState,
     cancel,
     converter_scenario_entry_point,
     get_first_currency_for_convert,
@@ -45,16 +43,16 @@ if __name__ == "__main__":
             )
         ],
         states={
-            VALUE_FOR_CONVERT: [
+            ConvertState.VALUE_FOR_CONVERT.value: [
                 MessageHandler(
                     filters.TEXT,
                     get_first_currency_for_convert,
                 ),
             ],
-            CONVERTED_CURRENCY: [
+            ConvertState.CONVERTED_CURRENCY.value: [
                 CallbackQueryHandler(set_first_currency, pattern="^[A-Z]{3}")
             ],
-            TO_CONVERT_CURRENCY: [
+            ConvertState.TO_CONVERT_CURRENCY.value: [
                 CallbackQueryHandler(
                     output_convert_result, pattern="^[A-Z]{3}"
                 )

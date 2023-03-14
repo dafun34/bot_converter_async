@@ -1,6 +1,7 @@
 """Модуль с обработчиками сценария конвертации валют."""
 import decimal
 import re
+from enum import Enum
 from typing import Union
 
 from telegram import Update
@@ -13,12 +14,14 @@ from markups.markups import (
 )
 from repositories.currencies import get_all_active_currencies_values
 
-# TODO: Переписать константы на Enum
-VALUE_FOR_CONVERT = 1
-CONVERTED_CURRENCY = 2
-TO_CONVERT_CURRENCY = 3
-REPLACE_VALUE = 4
-CANCEL_VALUE = 5
+
+class ConvertState(Enum):
+    """Энум со значениями сценария конвертации."""
+    VALUE_FOR_CONVERT = 1
+    CONVERTED_CURRENCY = 2
+    TO_CONVERT_CURRENCY = 3
+    REPLACE_VALUE = 4
+    CANCEL_VALUE = 5
 
 
 def add_key_by_char_code_currencies(currencies: dict) -> dict:
@@ -45,7 +48,7 @@ async def converter_scenario_entry_point(
     await update.effective_chat.send_message(
         text, reply_markup=converter_scenario_markup()
     )
-    return VALUE_FOR_CONVERT
+    return ConvertState.VALUE_FOR_CONVERT.value
 
 
 async def get_first_currency_for_convert(
@@ -69,7 +72,7 @@ async def get_first_currency_for_convert(
         await update.effective_chat.send_message(
             text, reply_markup=converter_scenario_markup()
         )
-        return VALUE_FOR_CONVERT
+        return ConvertState.VALUE_FOR_CONVERT.value
 
     value_for_convert = decimal.Decimal(update.message.text)
     context.user_data["value_for_convert"] = value_for_convert
@@ -83,7 +86,7 @@ async def get_first_currency_for_convert(
     await update.effective_chat.send_message(
         text, reply_markup=active_currencies_markup(currencies.values(), True)
     )
-    return CONVERTED_CURRENCY
+    return ConvertState.CONVERTED_CURRENCY.value
 
 
 async def set_first_currency(
@@ -106,7 +109,7 @@ async def set_first_currency(
     await update.effective_chat.send_message(
         text, reply_markup=active_currencies_markup(currencies.values(), True)
     )
-    return TO_CONVERT_CURRENCY
+    return ConvertState.TO_CONVERT_CURRENCY.value
 
 
 async def output_convert_result(
