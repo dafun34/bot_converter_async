@@ -1,37 +1,44 @@
+"""Модуль репозитория валют."""
 import datetime
+import decimal
 
 from sqlalchemy import insert, not_, select, update
 
 from config import settings
 from repositories.base import Repository
-from tables.currencies import Currencies
+from tables.currency import Currency
 
 
-async def get_all_currencies():
-    query = select(Currencies)
+async def get_all_currencies() -> list[Currency]:
+    """Получить все валюты."""
+    query = select(Currency)
     return await Repository.all(query)
 
 
-async def get_currency_by_char_code(char_code):
-    query = select(Currencies).where(Currencies.char_code == char_code)
+async def get_currency_by_char_code(char_code: str) -> Currency:
+    """Получить валюту по коду валюты."""
+    query = select(Currency).where(Currency.char_code == char_code)
     return await Repository.scalar(query)
 
 
-async def create_currency(currency: dict):
-    query = insert(Currencies).values(**currency)
+async def create_currency(currency: dict) -> None:
+    """Создать валюту."""
+    query = insert(Currency).values(**currency)
     await Repository.insert(query)
 
 
-async def update_currencies_values(values):
+async def update_currencies_values(data: dict) -> None:
+    """Обновить курс валюты."""
     query = (
-        update(Currencies)
-        .where(Currencies.char_code == values["char_code"])
-        .values(value=values["value"], updated_at=values["updated_at"])
+        update(Currency)
+        .where(Currency.char_code == data["char_code"])
+        .values(value=data["value"], updated_at=data["updated_at"])
     )
     await Repository.update(query)
 
 
-async def update_or_create_currencies(currencies_json):
+async def update_or_create_currencies(currencies_json: dict) -> None:
+    """Обновить или записать в БД валюту."""
     for item in currencies_json.values():
         data = {
             "source_id": item["ID"],
@@ -47,31 +54,37 @@ async def update_or_create_currencies(currencies_json):
         await update_currencies_values(data)
 
 
-async def set_ordering_by_char_code(char_code, value):
+async def set_ordering_by_char_code(
+    char_code: str, value: decimal.Decimal
+) -> None:
+    """Установить сортировку."""
     query = (
-        update(Currencies)
-        .where(Currencies.char_code == char_code)
+        update(Currency)
+        .where(Currency.char_code == char_code)
         .values(ordering_id=value)
     )
     await Repository.update(query)
 
 
-async def deactivate_currencies_to_default():
+async def deactivate_currencies_to_default() -> None:
+    """Деактивировать валюты которые не в дефолтном списке."""
     query = (
-        update(Currencies)
-        .where(not_(Currencies.char_code.in_(settings.ACTIVE_CURRENCIES)))
+        update(Currency)
+        .where(not_(Currency.char_code.in_(settings.ACTIVE_CURRENCIES)))
         .values(is_active=False)
     )
     await Repository.update(query)
 
 
-async def get_all_active_currencies_values():
-    query = select(Currencies).where(Currencies.is_active == True)
+async def get_all_active_currencies_values() -> list:
+    """Получить список активных валют."""
+    query = select(Currency).where(Currency.is_active == True)  # noqa E712
     return await Repository.all(query)
 
 
-async def insert_ruble():
-    query = insert(Currencies).values(
+async def insert_ruble() -> None:
+    """Вставить рубль."""
+    query = insert(Currency).values(
         source_id="RUB1",
         name="Российский Рубль",
         char_code="RUB",

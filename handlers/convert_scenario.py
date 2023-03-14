@@ -11,16 +11,26 @@ from markups.markups import (
     converter_scenario_markup,
     menu,
 )
-from repositories.currencies import get_all_active_currencies_values, \
-    get_currency_by_char_code
+from repositories.currencies import (
+    get_all_active_currencies_values,
+    get_currency_by_char_code,
+)
 
+
+# TODO: Переписать константы на Enum
 VALUE_FOR_CONVERT = 1
 CONVERTED_CURRENCY = 2
 TO_CONVERT_CURRENCY = 3
 REPLACE_VALUE = 4
 CANCEL_VALUE = 5
 
-def cache_currencies(currencies):
+
+def add_key_by_char_code_currencies(currencies: dict) -> dict:
+    """
+    Добавить char_code в качестве ключа.
+
+    Добавляем ключ что бы потом получить по ключу объект валюты.
+    """
     cache = {}
     for item in currencies:
         cache[item.char_code] = item
@@ -68,7 +78,7 @@ async def get_first_currency_for_convert(
     value_for_convert = decimal.Decimal(update.message.text)
     context.user_data["value_for_convert"] = value_for_convert
     currencies = await get_all_active_currencies_values()
-    currencies = cache_currencies(currencies)
+    currencies = add_key_by_char_code_currencies(currencies)
     context.user_data["active_currencies"] = currencies
     text = (
         "Выберети валюту из которой будет конвертироваться "
@@ -89,7 +99,7 @@ async def set_first_currency(
     Обработать запрос выбора первой валюты.
     """
     await update.callback_query.answer()
-    currencies = context.user_data['active_currencies']
+    currencies = context.user_data["active_currencies"]
     currency = currencies[update.callback_query.data]
     context.user_data["first_currency"] = currency
     value_for_convert = context.user_data["value_for_convert"]
@@ -108,7 +118,7 @@ async def output_convert_result(
 ) -> Union[ConversationHandler, int]:
     """Получить вторую валюту и вывести результат конвертации."""
     await update.callback_query.answer()
-    currencies = context.user_data['active_currencies']
+    currencies = context.user_data["active_currencies"]
     first_currency = context.user_data["first_currency"]
     second_currency = currencies[update.callback_query.data]
     value = context.user_data["value_for_convert"]

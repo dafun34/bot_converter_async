@@ -20,7 +20,7 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-from tables.currencies import Currencies
+from tables.currency import Currency
 
 target_metadata = Base.metadata
 

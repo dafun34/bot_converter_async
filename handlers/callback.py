@@ -12,7 +12,7 @@ from repositories.currencies import (
     get_all_active_currencies_values,
     get_currency_by_char_code,
 )
-from tables.currencies import Currencies
+from tables.currency import Currency
 from utils.morph_analyzer import MorphParser
 
 
@@ -74,8 +74,7 @@ async def base_handler(
 
 
 async def detail_currency_handler(
-    update: Update,
-    context: telegram.ext.ContextTypes.DEFAULT_TYPE
+    update: Update, context: telegram.ext.ContextTypes.DEFAULT_TYPE
 ) -> None:
     """Обработчик получения курса по запросу с кнопки."""
     query = update.callback_query
@@ -93,7 +92,7 @@ async def detail_currency_handler(
 
 def set_handler_by_currency_char_code(handlers: dict) -> dict:
     """Вспомогательная функция для получения активных валют."""
-    active_currencies = Currencies.objects.filter(is_active=True).values()
+    active_currencies = Currency.objects.filter(is_active=True).values()
     for currency in active_currencies:
         handlers[currency["char_code"]] = handlers["detail_currency_handler"]
     return handlers

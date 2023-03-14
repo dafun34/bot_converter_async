@@ -54,5 +54,5 @@ skip = ["migrations/"]
 profile="black"
 
 [tool.flake8]
-ignore = "ANN101"
 exclude = "manage.py, migrations/"
+ignore = ["W503", "C812", "SIM106", "CCR001", "R503", "E501", "N805", "ANN101", "ANN102", "SIM119", "Q441", "ANN401", "Q443", "F405"]

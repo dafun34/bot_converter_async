@@ -3,9 +3,9 @@ format:
 	poetry run black .
 
 check:
-	poetry run isort bot_converter --check
-	poetry run flake8 bot_converter
-	poetry run black bot_converter --check
+	poetry run isort . --check
+	poetry run flake8 .
+	poetry run black . --check
 
 makemigrations:
 	docker-compose exec app alembic revision --autogenerate

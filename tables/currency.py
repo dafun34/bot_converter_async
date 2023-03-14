@@ -1,9 +1,12 @@
+"""Модуль создания модели валют."""
 import sqlalchemy as sa
 
 from tables.base import Base
 
 
-class Currencies(Base):
+class Currency(Base):
+    """Модель валют."""
+
     __tablename__ = "currencies"
 
     id = sa.Column(

@@ -1,3 +1,4 @@
+"""Модуль базового репозитория."""
 from typing import Any, NewType, Union
 
 from sqlalchemy.engine import Result

@@ -11,7 +11,8 @@ from telegram.ext import (
 )
 
 from handlers.callback import (
-    detail_currency_handler, get_currencies_handler,
+    detail_currency_handler,
+    get_currencies_handler,
     help_callback_handler,
     menu_callback_handler,
 )
@@ -79,8 +80,9 @@ if __name__ == "__main__":
             get_currencies_handler, pattern="^get_currencies_handler"
         )
     )
-    application.add_handler(CallbackQueryHandler(
-        detail_currency_handler, pattern="^[A-Z]{3}"))
+    application.add_handler(
+        CallbackQueryHandler(detail_currency_handler, pattern="^[A-Z]{3}")
+    )
     application.run_polling()
 
     logger.info("Bot run up.")
