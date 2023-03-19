@@ -32,6 +32,7 @@ load_dotenv()
 
 
 if __name__ == "__main__":
+    logger.info("Bot run up.")
     application = ApplicationBuilder().token(os.getenv("BOT_TOKEN")).build()
     start_handler = CommandHandler("start", start)
     application.add_handler(start_handler)
@@ -84,5 +85,4 @@ if __name__ == "__main__":
     )
     application.run_polling()
 
-    logger.info("Bot run up.")
     application.run_polling()

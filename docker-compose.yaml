@@ -36,6 +36,15 @@ services:
     depends_on:
       - redis
 
+  beat:
+    build: .
+    command: celery -A celery_app:app beat --loglevel=INFO
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+      - worker
+
   flower:
     build: .
     command: celery -A celery_app:app flower
