@@ -1,7 +1,6 @@
-from sqlalchemy import select, insert
+from sqlalchemy import insert, select
 
-from repositories.base import Base
-from repositories.base import Repository
+from repositories.base import Base, Repository
 from tables.user import User
 
 

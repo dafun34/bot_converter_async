@@ -73,7 +73,7 @@ async def deactivate_currencies_to_default() -> None:
     await Repository.update(query)
 
 
-async def get_all_active_currencies_values() -> list:
+async def get_all_active_currencies() -> list:
     """Получить список активных валют."""
     query = select(Currency).where(Currency.is_active == True)  # noqa E712
     return await Repository.all(query)

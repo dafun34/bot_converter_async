@@ -6,7 +6,7 @@ from markups.markups import active_currencies_markup
 from markups.markups import menu as menu_markup
 from markups.markups import start
 from repositories.currencies import (
-    get_all_active_currencies_values,
+    get_all_active_currencies,
     get_currency_by_char_code,
 )
 from tables.currency import Currency
@@ -54,7 +54,7 @@ async def get_currencies_handler(
     """
     query = update.callback_query
     await query.answer()
-    currencies = await get_all_active_currencies_values()
+    currencies = await get_all_active_currencies()
     reply_markup = active_currencies_markup(currencies)
     await update.effective_chat.send_message(
         text="Активные валюты:", reply_markup=reply_markup
@@ -81,7 +81,7 @@ async def detail_currency_handler(
     currency = await get_currency_by_char_code(char_code)
     currency_name = morph_parser.change_case(currency.name)
     text = f"Курс {currency_name} - {currency.value}"
-    currencies = await get_all_active_currencies_values()
+    currencies = await get_all_active_currencies()
     await update.effective_chat.send_message(
         text, reply_markup=active_currencies_markup(currencies)
     )
