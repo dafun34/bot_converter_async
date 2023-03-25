@@ -16,11 +16,14 @@ async def prepare_currency_summary():
     text = ""
     active_currencies = await get_all_active_currencies()
     for currency in active_currencies:
-        text += f"Курс {morph_parser.change_case(currency.name)} - {currency.value} \n"
+        text += (
+            f"Курс {morph_parser.change_case(currency.name)} "
+            f"- {currency.value} \n"
+        )
     return text
 
 
-async def send_test_messages():
+async def send_currencies_summary():
     bot = telegram.Bot(token=os.getenv("BOT_TOKEN"))
     users = await get_all_users()
     summary = await prepare_currency_summary()
