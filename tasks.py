@@ -34,7 +34,3 @@ async def send_currencies_summary():
                 await bot.send_message(chat_id=user.id, text=summary)
         finally:
             await bot.shutdown()
-
-
-# if __name__ == "__main__":
-#     asyncio.run(prepare_currency_summary())

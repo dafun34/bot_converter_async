@@ -4,7 +4,7 @@ from telegram.ext import ContextTypes
 
 from log.logger import logger
 from markups.markups import start as start_markup
-from repositories.users import insert_user
+from repositories.users import get_user, insert_user
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -24,5 +24,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         f"я бот конвертер, с моими возможностями "
         f"можно ознакомиться в пункете Помощь"
     )
-    await insert_user(update.effective_user.id)
+    user = await get_user(update.effective_user.id)
+    if not user:
+        await insert_user(update.effective_user.id)
     await update.message.reply_text(text, reply_markup=start_markup())
+
+
+async def gpt(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    pass

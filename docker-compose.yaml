@@ -8,16 +8,17 @@ services:
       POSTGRES_PASSWORD: ${DB_PASS}
       POSTGRES_DB: ${DB_NAME}
     ports:
-      - 5432:5432
+      - "5432:5432"
 
   app:
     build: .
+    restart: always
     volumes:
       - .:/app
       - ./migrations:/app/migrations
       - ./tables:/app/tables
     ports:
-      - 9595:9595
+      - "9595:9595"
     env_file:
       - .env
     depends_on:
