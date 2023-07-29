@@ -9,7 +9,8 @@ services:
     ports:
       - 5432:5432
   app:
-    build: .
+    image: dafun/bot_converter_async
+    restart: 'no'
     volumes:
       - ./migrations:/app/migrations
       - ./tables:/app/tables
