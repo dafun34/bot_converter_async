@@ -6,4 +6,4 @@ log.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 
-logger = log.getLogger("Bot_converter_async_test")
+logger = log.getLogger("bot_converter_async")

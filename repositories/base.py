@@ -5,7 +5,7 @@ from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql import Delete, Insert, Select, Update
 
-from db import async_session
+from db import DBClient
 from tables.base import Base
 
 Query = NewType("Query", Union[Delete, Select, Update, Insert])
@@ -14,10 +14,12 @@ Query = NewType("Query", Union[Delete, Select, Update, Insert])
 class Repository:
     """Класс обертка для работы с базой."""
 
+    async_session = DBClient.async_session
+
     @classmethod
     async def _execute(cls, query: Query) -> Result:
         """Обернуть запрос в сессию."""
-        async with async_session() as session:
+        async with cls.async_session() as session:
             cursor = await cls._db_request(session, query=query)
             await session.commit()
             return cursor
@@ -40,7 +42,7 @@ class Repository:
     @classmethod
     async def bulk_insert(cls, objects: list[Base]) -> Any:
         """Добавить запись в базу."""
-        async with async_session() as session:
+        async with cls.async_session() as session:
             session.add_all(objects)
             await session.commit()
 

@@ -7,15 +7,49 @@ services:
       POSTGRES_PASSWORD: ${DB_PASS}
       POSTGRES_DB: ${DB_NAME}
     ports:
-      - 5432:5432
+      - "5432:5432"
+
   app:
-    build: .
+    image: dafun/bot_converter_async
+    restart: 'no'
     volumes:
+      - .:/app
       - ./migrations:/app/migrations
       - ./tables:/app/tables
     ports:
-      - 9595:9595
+      - "9595:9595"
     env_file:
       - .env
     depends_on:
       - db
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+
+  worker:
+    build: .
+    command: celery -A celery_app:app worker --loglevel=INFO
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+
+  beat:
+    build: .
+    command: celery -A celery_app:app beat --loglevel=INFO
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+      - worker
+
+  flower:
+    build: .
+    command: celery -A celery_app:app flower
+    ports:
+      - 5555:5555
+    depends_on:
+      - worker
+      - redis

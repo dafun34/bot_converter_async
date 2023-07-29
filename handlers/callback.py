@@ -5,10 +5,7 @@ from telegram import Update
 from markups.markups import active_currencies_markup
 from markups.markups import menu as menu_markup
 from markups.markups import start
-from repositories.currencies import (
-    get_all_active_currencies_values,
-    get_currency_by_char_code,
-)
+from repositories.currencies import CurrencyDBClient
 from tables.currency import Currency
 from utils.morph_analyzer import MorphParser
 
@@ -54,7 +51,7 @@ async def get_currencies_handler(
     """
     query = update.callback_query
     await query.answer()
-    currencies = await get_all_active_currencies_values()
+    currencies = await CurrencyDBClient.get_all_active_currencies()
     reply_markup = active_currencies_markup(currencies)
     await update.effective_chat.send_message(
         text="Активные валюты:", reply_markup=reply_markup
@@ -78,10 +75,10 @@ async def detail_currency_handler(
     await query.answer()
     morph_parser = MorphParser()
     char_code = update.callback_query.data
-    currency = await get_currency_by_char_code(char_code)
+    currency = await CurrencyDBClient.get_currency_by_char_code(char_code)
     currency_name = morph_parser.change_case(currency.name)
     text = f"Курс {currency_name} - {currency.value}"
-    currencies = await get_all_active_currencies_values()
+    currencies = await CurrencyDBClient.get_all_active_currencies()
     await update.effective_chat.send_message(
         text, reply_markup=active_currencies_markup(currencies)
     )

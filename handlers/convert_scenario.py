@@ -12,7 +12,7 @@ from markups.markups import (
     converter_scenario_markup,
     menu,
 )
-from repositories.currencies import get_all_active_currencies_values
+from repositories.currencies import CurrencyDBClient
 
 
 class ConvertState(Enum):
@@ -77,7 +77,7 @@ async def get_first_currency_for_convert(
 
     value_for_convert = decimal.Decimal(update.message.text)
     context.user_data["value_for_convert"] = value_for_convert
-    currencies = await get_all_active_currencies_values()
+    currencies = await CurrencyDBClient.get_all_active_currencies()
     currencies = add_key_by_char_code_currencies(currencies)
     context.user_data["active_currencies"] = currencies
     text = (
