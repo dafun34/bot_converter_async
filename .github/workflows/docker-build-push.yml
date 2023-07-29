@@ -25,4 +25,4 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: dockerlab/bot_converter_async:latest
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/bot_converter_async:latest
