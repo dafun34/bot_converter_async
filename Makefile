@@ -12,3 +12,9 @@ makemigrations:
 
 migrate:
 	docker-compose exec app alembic upgrade head
+
+celery_up:
+	docker-compose exec app celery -A celery_app:app worker --loglevel=INFO
+
+flower_up:
+	docker-compose exec app celery -A celery_app:app flower

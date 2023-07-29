@@ -31,7 +31,8 @@ from log.logger import logger
 load_dotenv()
 
 
-if __name__ == "__main__":
+def main():
+    logger.info("Bot run up.")
     application = ApplicationBuilder().token(os.getenv("BOT_TOKEN")).build()
     start_handler = CommandHandler("start", start)
     application.add_handler(start_handler)
@@ -62,7 +63,6 @@ if __name__ == "__main__":
             CallbackQueryHandler(cancel, pattern="^cancel_convert_scenario")
         ],
     )
-
     application.add_handler(conv_handler)
     application.add_handler(
         CallbackQueryHandler(
@@ -84,5 +84,6 @@ if __name__ == "__main__":
     )
     application.run_polling()
 
-    logger.info("Bot run up.")
-    application.run_polling()
+
+if __name__ == "__main__":
+    main()

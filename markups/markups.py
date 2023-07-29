@@ -57,7 +57,7 @@ def menu() -> InlineKeyboardMarkup:
             InlineKeyboardButton(
                 "🔄 Конвертер валют 🔄", callback_data="start_convert_scenario"
             ),
-        ]
+        ],
     ]
     return InlineKeyboardMarkup(keyboard)
 

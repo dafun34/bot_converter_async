@@ -3,6 +3,7 @@ from telegram import Update
 from telegram.ext import ContextTypes
 from log.logger import logger
 from markups.markups import start as start_markup
+from repositories.users import get_user, insert_user
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -14,6 +15,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     Меню.
     ...
     """
+    logger.info(
+        f"User with ID {update.effective_user.id} execute start command"
+    )
     text = (
         f"Привет {update.effective_user.name} "
         f"я бот конвертер, с моими возможностями "
@@ -24,3 +28,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         f"and id {update.effective_user.id} executed a start"
     )
     await update.message.reply_text(text, reply_markup=start_markup())
+
+
+async def gpt(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    pass
