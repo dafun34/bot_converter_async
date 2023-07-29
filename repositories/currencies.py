@@ -95,5 +95,17 @@ class CurrencyDBClient:
         )
         await Repository.insert(query)
 
+
 async def write_currencies_sql_query():
+    currencies_data = []
+    currencies = await CurrencyDBClient.get_all_currencies()
+    for curr in currencies:
+        currencies_data.append(
+            (curr.char_code, curr.is_active, curr.name, curr.ordering_id, curr.source_id, curr.value)
+        )
+    currencies_data = tuple(currencies_data)
+    string_query = (
+        f"INSERT INTO currencies (char_code, is_active, name, ordering_id, source_id, value) "
+        f"VALUES {currencies_data}"
+    )
     pass

@@ -1,6 +1,6 @@
 """Модуль приложения."""
 import os
-
+import nest_asyncio
 from dotenv import load_dotenv
 from telegram.ext import (
     ApplicationBuilder,
@@ -32,6 +32,7 @@ load_dotenv()
 
 
 def main():
+    nest_asyncio.apply()
     logger.info("Bot run up.")
     application = ApplicationBuilder().token(os.getenv("BOT_TOKEN")).build()
     start_handler = CommandHandler("start", start)

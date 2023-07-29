@@ -19,6 +19,7 @@ pymorphy2 = "^0.9.1"
 celery = "^5.2.7"
 redis = "^4.5.1"
 flower = "^1.2.0"
+nest-asyncio = "^1.5.7"
 
 
 [tool.poetry.group.dev.dependencies]
