@@ -22,6 +22,6 @@ jobs:
     - name: Build and push Docker image
       uses: docker/build-push-action@v2
       with:
-        context: . # Путь к контексту сборки Docker образа
+        context: .
         push: true
-        tags: dockerlab/bot_converter_async:latest # Замените "имя_образа" на имя вашего образа в Docker Hub
+        tags: dockerlab/bot_converter_async:latest
