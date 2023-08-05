@@ -12,4 +12,4 @@ COPY poetry.lock .
 COPY pyproject.toml .
 RUN poetry install --no-root
 COPY . .
-CMD ["python", "bot.py"]
+CMD ["python", "__main__.py"]

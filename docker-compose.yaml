@@ -10,7 +10,7 @@ services:
       - "5432:5432"
 
   app:
-    image: dafun/bot_converter_async
+    image: dafun/bot_converter_async:latest
     restart: 'no'
     volumes:
       - .:/app
