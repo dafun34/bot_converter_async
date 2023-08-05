@@ -4,7 +4,7 @@ import json
 
 from aiohttp import ClientSession
 
-from repositories.currencies import update_or_create_currencies
+from repositories.currencies import CurrencyDBClient
 
 
 async def get_currencies_for_db() -> None:
@@ -13,7 +13,7 @@ async def get_currencies_for_db() -> None:
         url = "https://www.cbr-xml-daily.ru/daily_json.js"
         async with session.get(url) as response:
             currencies_json = json.loads(await response.text())["Valute"]
-            await update_or_create_currencies(currencies_json)
+            await CurrencyDBClient.update_or_create_currencies(currencies_json)
 
 
 async def main() -> None:

@@ -4,7 +4,7 @@ import os
 import telegram
 from dotenv import load_dotenv
 
-from repositories.currencies import get_all_active_currencies
+from repositories.currencies import CurrencyDBClient
 from repositories.users import get_all_users
 from utils.morph_analyzer import MorphParser
 
@@ -14,7 +14,7 @@ load_dotenv()
 async def prepare_currency_summary():
     morph_parser = MorphParser()
     text = ""
-    active_currencies = await get_all_active_currencies()
+    active_currencies = await CurrencyDBClient.get_all_active_currencies()
     for currency in active_currencies:
         text += (
             f"Курс {morph_parser.change_case(currency.name)} "
