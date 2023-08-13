@@ -15,11 +15,6 @@ app.conf.timezone = pytz.timezone("Europe/Moscow")
 
 
 @app.task
-def my_periodic_task():
-    print("This is a periodic task")
-
-
-@app.task
 def send_currencies_summary_task():
     asyncio.get_event_loop().run_until_complete(send_currencies_summary())
 
