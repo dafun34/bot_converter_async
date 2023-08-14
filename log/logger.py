@@ -4,6 +4,4 @@ import sys
 from loguru import logger
 logger = logger
 
-logger.add(sink=sys.stderr, format="{time} {level} {message}", filter="bot_converter_async", level="INFO")
-
-
+logger.add(level="INFO", sink=sys.stderr, colorize=True, format="{level} <light-blue>{time}</light-blue> <level>{message}</level>")
