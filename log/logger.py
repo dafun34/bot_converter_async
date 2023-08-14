@@ -1,9 +1,9 @@
 """Модуль логгера."""
-import logging as log
+import sys
 
-log.basicConfig(
-    level=log.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-)
+from loguru import logger
+logger = logger
 
-logger = log.getLogger("bot_converter_async")
+logger.add(sink=sys.stderr, format="{time} {level} {message}", filter="bot_converter_async", level="INFO")
+
+

@@ -1,4 +1,5 @@
 """Модуль обработчиков команд."""
+from sqlalchemy.exc import IntegrityError
 from telegram import Update
 from telegram.ext import ContextTypes
 from log.logger import logger
@@ -27,5 +28,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         f"User with name: {update.effective_user.name} "
         f"and id {update.effective_user.id} executed a start"
     )
-    await UsersDBClient.insert_user(update.effective_user.id)
+    try:
+        # TODO Лучше переделать на get_or_create
+        await UsersDBClient.insert_user(update.effective_user.id)
+    except IntegrityError as err:
+        logger.info(f"Error in start command handler {str(err)}")
     await update.message.reply_text(text, reply_markup=start_markup())
