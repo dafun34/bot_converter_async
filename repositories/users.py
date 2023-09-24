@@ -5,7 +5,6 @@ from tables.user import User
 
 
 class UsersDBClient:
-
     @classmethod
     async def insert_user(cls, user_id: int) -> int:
         query = insert(User).values(id=user_id)

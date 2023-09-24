@@ -1,7 +1,7 @@
 from alembic import command
+from alembic.config import Config as AlembicConfig
 
 import bot
-from alembic.config import Config as AlembicConfig
 from config import settings
 
 if __name__ == "__main__":

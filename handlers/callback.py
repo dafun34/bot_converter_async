@@ -58,11 +58,16 @@ async def get_currencies_handler(
         text="Активные валюты:", reply_markup=reply_markup
     )
 
-async def get_vpv_calendar_handler(update: Update, context: telegram.ext.ContextTypes.DEFAULT_TYPE) -> None:
+
+async def get_vpv_calendar_handler(
+    update: Update, context: telegram.ext.ContextTypes.DEFAULT_TYPE
+) -> None:
     query = update.callback_query
     await query.answer()
     image_link = await get_vpv_calendar_image_link()
-    await update.effective_chat.send_message(image_link, reply_markup=menu_markup())
+    await update.effective_chat.send_message(
+        image_link, reply_markup=menu_markup()
+    )
 
 
 # async def base_handler(

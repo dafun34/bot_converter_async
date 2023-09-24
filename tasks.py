@@ -39,5 +39,6 @@ async def send_currencies_summary():
 async def main():
     await send_currencies_summary()
 
+
 if __name__ == "__main__":
     asyncio.run(main())

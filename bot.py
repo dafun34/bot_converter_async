@@ -1,5 +1,6 @@
 """Модуль приложения."""
 import os
+
 import nest_asyncio
 from dotenv import load_dotenv
 from telegram.ext import (
@@ -14,8 +15,9 @@ from telegram.ext import (
 from handlers.callback import (
     detail_currency_handler,
     get_currencies_handler,
+    get_vpv_calendar_handler,
     help_callback_handler,
-    menu_callback_handler, get_vpv_calendar_handler,
+    menu_callback_handler,
 )
 from handlers.command import start
 from handlers.convert_scenario import (
@@ -84,7 +86,9 @@ def main():
         CallbackQueryHandler(detail_currency_handler, pattern="^[A-Z]{3}")
     )
     application.add_handler(
-        CallbackQueryHandler(get_vpv_calendar_handler, "^get_vpv_calendar_handler")
+        CallbackQueryHandler(
+            get_vpv_calendar_handler, "^get_vpv_calendar_handler"
+        )
     )
     application.run_polling()
 

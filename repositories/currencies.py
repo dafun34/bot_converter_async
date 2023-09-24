@@ -57,7 +57,9 @@ class CurrencyDBClient:
             await cls.update_currencies_values(data)
 
     @classmethod
-    async def set_ordering_by_char_code(cls, char_code: str, value: int) -> None:
+    async def set_ordering_by_char_code(
+        cls, char_code: str, value: int
+    ) -> None:
         """Установить сортировку."""
         query = (
             update(Currency)
@@ -101,7 +103,14 @@ async def write_currencies_sql_query():
     currencies = await CurrencyDBClient.get_all_currencies()
     for curr in currencies:
         currencies_data.append(
-            (curr.char_code, curr.is_active, curr.name, curr.ordering_id, curr.source_id, curr.value)
+            (
+                curr.char_code,
+                curr.is_active,
+                curr.name,
+                curr.ordering_id,
+                curr.source_id,
+                curr.value,
+            )
         )
     currencies_data = tuple(currencies_data)
     string_query = (
