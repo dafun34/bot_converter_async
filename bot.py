@@ -15,7 +15,7 @@ from handlers.callback import (
     detail_currency_handler,
     get_currencies_handler,
     help_callback_handler,
-    menu_callback_handler,
+    menu_callback_handler, get_vpv_calendar_handler,
 )
 from handlers.command import start
 from handlers.convert_scenario import (
@@ -82,6 +82,9 @@ def main():
     )
     application.add_handler(
         CallbackQueryHandler(detail_currency_handler, pattern="^[A-Z]{3}")
+    )
+    application.add_handler(
+        CallbackQueryHandler(get_vpv_calendar_handler, "^get_vpv_calendar_handler")
     )
     application.run_polling()
 

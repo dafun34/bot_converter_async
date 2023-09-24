@@ -21,6 +21,7 @@ redis = "^4.5.1"
 flower = "^1.2.0"
 nest-asyncio = "^1.5.7"
 loguru = "^0.7.0"
+beautifulsoup4 = "^4.12.2"
 
 
 [tool.poetry.group.dev.dependencies]

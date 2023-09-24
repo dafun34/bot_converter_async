@@ -57,6 +57,7 @@ def menu() -> InlineKeyboardMarkup:
             InlineKeyboardButton(
                 "🔄 Конвертер валют 🔄", callback_data="start_convert_scenario"
             ),
+            InlineKeyboardButton("📅 VPV Календарь скидок 📅", callback_data="get_vpv_calendar_handler")
         ],
     ]
     return InlineKeyboardMarkup(keyboard)

@@ -2,6 +2,7 @@
 import telegram.ext
 from telegram import Update
 
+from handlers.http_requests.vpv import get_vpv_calendar_image_link
 from markups.markups import active_currencies_markup
 from markups.markups import menu as menu_markup
 from markups.markups import start
@@ -56,6 +57,12 @@ async def get_currencies_handler(
     await update.effective_chat.send_message(
         text="Активные валюты:", reply_markup=reply_markup
     )
+
+async def get_vpv_calendar_handler(update: Update, context: telegram.ext.ContextTypes.DEFAULT_TYPE) -> None:
+    query = update.callback_query
+    await query.answer()
+    image_link = await get_vpv_calendar_image_link()
+    await update.effective_chat.send_message(image_link, reply_markup=menu_markup())
 
 
 # async def base_handler(
