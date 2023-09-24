@@ -19,7 +19,7 @@ from handlers.callback import (
     help_callback_handler,
     menu_callback_handler,
 )
-from handlers.command import start
+from handlers.command import start, update_currencies
 from handlers.convert_scenario import (
     ConvertState,
     cancel,
@@ -38,7 +38,9 @@ def main():
     logger.info("Bot run up.")
     application = ApplicationBuilder().token(os.getenv("BOT_TOKEN")).build()
     start_handler = CommandHandler("start", start)
+    update_currencies_handler = CommandHandler("update_currencies", update_currencies)
     application.add_handler(start_handler)
+    application.add_handler(update_currencies_handler)
     conv_handler = ConversationHandler(
         entry_points=[
             CallbackQueryHandler(
