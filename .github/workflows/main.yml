@@ -6,6 +6,11 @@ on:
       - main
 
 jobs:
+  generate_env:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Placeholder for Generate Env
+        run: echo "This is a placeholder for generating the .env file."
 
   deploy:
     runs-on: ubuntu-latest
@@ -18,11 +23,14 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            # Define project path (make sure it's set in secrets)
+            PROJECT_PATH=${{ secrets.PROJECT_PATH }}
+
             # Ensure the project directory exists
-            mkdir -p ${PROJECT_PATH}
+            mkdir -p $PROJECT_PATH
 
             # Create .env file on the server
-            cat <<EOF > ${PROJECT_PATH}/.env
+            cat <<EOF > $PROJECT_PATH/.env
             BOT_TOKEN=${{ secrets.BOT_TOKEN }}
             BOT_PROD_TOKEN=${{ secrets.BOT_PROD_TOKEN }}
             YANDEXAPIKEY=${{ secrets.YANDEXAPIKEY }}
@@ -40,7 +48,7 @@ jobs:
             EOF
 
             # Update project and restart services
-            cd ${PROJECT_PATH}
-            git pull origin master
+            cd $PROJECT_PATH
+            git pull origin main
             docker compose down
             docker compose up --build -d
