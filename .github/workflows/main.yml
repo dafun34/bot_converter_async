@@ -23,11 +23,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            pwd
-            ls
-            # Update project and restart services
-            cd /dev/bot_converter_async
-            ls -a
+            cd ${{ secrets.PROJECT_PATH }}
             git pull origin main
             docker compose down
             docker compose up --build -d
