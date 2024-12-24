@@ -24,11 +24,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             # Define project path (make sure it's set in secrets)
-            PROJECT_PATH=${{ secrets.PROJECT_PATH }}
-
-            # Ensure the project directory exists
-            mkdir -p $PROJECT_PATH
-
+            PROJECT_PATH=${{ secrets.PROJECT_PATH }}      
             # Create .env file on the server
             cat <<EOF > $PROJECT_PATH/.env
             BOT_TOKEN=${{ secrets.BOT_TOKEN }}
