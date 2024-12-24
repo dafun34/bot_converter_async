@@ -27,6 +27,7 @@ jobs:
             ls
             # Update project and restart services
             cd /dev/bot_converter_async
+            ls -a
             git pull origin main
             docker compose down
             docker compose up --build -d
