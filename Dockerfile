@@ -1,6 +1,6 @@
 FROM python:3.9
 
-ENV PYTHONPATH /app
+ENV PATH="${PATH}:/root/.local/bin"
 ENV PYTHONUNBUFFERED 1
 RUN apt-get -qq update && apt install --no-install-recommends -y curl libmagickwand-dev wget make wait-for-it && \
     curl -sSL https://install.python-poetry.org | python3 - && \
