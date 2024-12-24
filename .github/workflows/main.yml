@@ -59,6 +59,10 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+    - name: Ensure the project directory exists
+      run: |
+        ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_SERVER }} "mkdir -p ${PROJECT_PATH}"
+
     - name: Upload .env to server
       run: |
         scp .env ${{ secrets.SSH_USER }}@${{ secrets.SSH_SERVER }}:${{ secrets.PROJECT_PATH }}/.env
