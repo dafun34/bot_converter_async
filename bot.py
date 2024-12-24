@@ -1,5 +1,6 @@
 """Модуль приложения."""
 import os
+
 import nest_asyncio
 from dotenv import load_dotenv
 from telegram.ext import (
@@ -14,10 +15,11 @@ from telegram.ext import (
 from handlers.callback import (
     detail_currency_handler,
     get_currencies_handler,
+    get_vpv_calendar_handler,
     help_callback_handler,
     menu_callback_handler,
 )
-from handlers.command import start
+from handlers.command import start, update_currencies
 from handlers.convert_scenario import (
     ConvertState,
     cancel,
@@ -36,7 +38,9 @@ def main():
     logger.info("Bot run up.")
     application = ApplicationBuilder().token(os.getenv("BOT_TOKEN")).build()
     start_handler = CommandHandler("start", start)
+    update_currencies_handler = CommandHandler("update_currencies", update_currencies)
     application.add_handler(start_handler)
+    application.add_handler(update_currencies_handler)
     conv_handler = ConversationHandler(
         entry_points=[
             CallbackQueryHandler(
@@ -82,6 +86,11 @@ def main():
     )
     application.add_handler(
         CallbackQueryHandler(detail_currency_handler, pattern="^[A-Z]{3}")
+    )
+    application.add_handler(
+        CallbackQueryHandler(
+            get_vpv_calendar_handler, "^get_vpv_calendar_handler"
+        )
     )
     application.run_polling()
 

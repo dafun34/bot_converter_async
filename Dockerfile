@@ -1,4 +1,4 @@
-FROM python:3.9.1-slim
+FROM python:3.9
 
 ENV PATH="${PATH}:/root/.local/bin"
 ENV PYTHONUNBUFFERED 1
