@@ -4,7 +4,7 @@ ENV PYTHONPATH /app
 ENV PYTHONUNBUFFERED 1
 RUN apt-get -qq update && apt install --no-install-recommends -y curl libmagickwand-dev wget make wait-for-it && \
     curl -sSL https://install.python-poetry.org | python3 - && \
-    poetry config virtualenvs.create false && \
+    poetry config virtualenvs.create True && \
     poetry self update && \
     mkdir app
 WORKDIR /app
