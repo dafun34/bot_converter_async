@@ -11,6 +11,8 @@ services:
       PGUSER: "${DB_USER}"
     ports:
       - "5432:5432"
+    networks:
+      - my_network
 
   app:
     image: dafun/bot_converter_async:latest
@@ -25,11 +27,15 @@ services:
       - .env
     depends_on:
       - db
+    networks:
+      - my_network
 
   redis:
     image: redis
     ports:
       - "6379:6379"
+    networks:
+      - my_network
 
   worker:
     build: .
@@ -38,6 +44,8 @@ services:
       - .:/app
     depends_on:
       - redis
+    networks:
+      - my_network
 
   beat:
     build: .
@@ -47,6 +55,8 @@ services:
     depends_on:
       - redis
       - worker
+    networks:
+      - my_network
 
   flower:
     build: .
@@ -55,3 +65,9 @@ services:
       - "5555:5555"
     depends_on:
       - worker
+    networks:
+      - my_network
+
+networks:
+  my_network:
+    driver: bridge
