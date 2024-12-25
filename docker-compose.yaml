@@ -11,8 +11,6 @@ services:
       PGUSER: "${DB_USER}"
     ports:
       - "5432:5432"
-    volumes:
-      - db-data:/var/lib/postgresql/data
 
   app:
     image: dafun/bot_converter_async:latest
@@ -32,8 +30,6 @@ services:
     image: redis
     ports:
       - "6379:6379"
-    volumes:
-      - redis-data:/data
 
   worker:
     build: .
@@ -59,7 +55,3 @@ services:
       - "5555:5555"
     depends_on:
       - worker
-
-volumes:
-  db-data:
-  redis-data:
