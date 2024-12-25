@@ -15,7 +15,8 @@ services:
       - my_network
 
   app:
-    image: dafun/bot_converter_async:latest
+#    image: dafun/bot_converter_async:latest
+    build: .
     restart: 'no'
     volumes:
       - .:/app
